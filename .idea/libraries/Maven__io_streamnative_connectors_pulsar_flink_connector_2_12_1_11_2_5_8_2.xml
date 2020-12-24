@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: io.streamnative.connectors:pulsar-flink-connector-2.12-1.11:2.5.8.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/streamnative/connectors/pulsar-flink-connector-2.12-1.11/2.5.8.2/pulsar-flink-connector-2.12-1.11-2.5.8.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/io/streamnative/connectors/pulsar-flink-connector-2.12-1.11/2.5.8.2/pulsar-flink-connector-2.12-1.11-2.5.8.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/streamnative/connectors/pulsar-flink-connector-2.12-1.11/2.5.8.2/pulsar-flink-connector-2.12-1.11-2.5.8.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
