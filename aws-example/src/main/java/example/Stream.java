@@ -23,12 +23,23 @@ public class Stream {
         String serviceUrl = "your service url";
         String adminUrl = "your admin url";
 
+        //auth by OAuth2, note that these parameters can be found in the StreamNative Cloud cluster sidebar -> Connect -> Clients.
+        String issueUrl = "your issue url";
+        String credentialsUrl = "your credentials url";
+        String audience = "your audience";
+        String url = "{\"type\":\"client_credentials\",\"privateKey\":\""+ credentialsUrl +"\",\"issuerUrl\":\"" + issueUrl + "\",\"audience\":\""+ audience +"\"}";
+        String className = AuthenticationOAuth2.class.getName();
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         PulsarDeserializationSchema<String> sourceDeserializer = new PulsarDeserializationSchemaWrapper<>(new SimpleStringSchema());
 
         Properties sourceProperties = new Properties();
         sourceProperties.setProperty("topic", "public/default/source-topic");
+        //set auth property
+        sourceProperties.setProperty(PulsarOptions.AUTH_PARAMS_KEY, url);
+        sourceProperties.setProperty(PulsarOptions.AUTH_PLUGIN_CLASSNAME_KEY, className);
+        //create source
         FlinkPulsarSource<String> source = new FlinkPulsarSource(
                 serviceUrl,
                 adminUrl,
@@ -46,7 +57,10 @@ public class Stream {
 
         Properties sinkProperties = new Properties();
         sinkProperties.setProperty(PulsarOptions.CLIENT_CACHE_SIZE_OPTION_KEY, "100");
-
+        //set auth property
+        sinkProperties.setProperty(PulsarOptions.AUTH_PARAMS_KEY, url);
+        sinkProperties.setProperty(PulsarOptions.AUTH_PLUGIN_CLASSNAME_KEY, className);
+        //create sink
         FlinkPulsarSink<String> sink = new FlinkPulsarSink<String>(
                 serviceUrl,
                 adminUrl,
