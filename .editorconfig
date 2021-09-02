@@ -38,3 +38,6 @@ indent_size = 2
 
 [*.cmd]
 end_of_line = crlf
+
+[pom.xml]
+indent_style = tab
