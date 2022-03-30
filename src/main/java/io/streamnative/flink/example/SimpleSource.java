@@ -31,7 +31,6 @@ import static io.streamnative.flink.example.config.ApplicationConfigs.loadConfig
 import static java.time.Duration.ofMinutes;
 import static org.apache.flink.api.common.eventtime.WatermarkStrategy.forBoundedOutOfOrderness;
 import static org.apache.flink.configuration.Configuration.fromMap;
-import static org.apache.flink.connector.pulsar.source.PulsarSourceOptions.PULSAR_MAX_FETCH_TIME;
 import static org.apache.flink.connector.pulsar.source.reader.deserializer.PulsarDeserializationSchema.flinkSchema;
 import static org.apache.pulsar.client.api.SubscriptionType.Shared;
 
@@ -59,7 +58,6 @@ public final class SimpleSource {
             .setSubscriptionName("flink-source")
             .setConsumerName("flink-source-%s")
             .setSubscriptionType(Shared)
-            .setConfig(PULSAR_MAX_FETCH_TIME, 100L)
             .setConfig(fromMap(configs.sourceConfigs()))
             .build();
 

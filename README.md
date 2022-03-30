@@ -9,9 +9,9 @@ to use this connector.
 
 ## How to use
 
-### Prepare the environment.
+### Prepare the environment
 
-#### Docker command.
+#### Docker command
 
 We use docker to run an operable Pulsar environment. All the thing you need to do is just one command.
 

@@ -25,7 +25,7 @@ adminUrl: http://192.168.50.8:8080
 flink:
   parallelism: 4
   checkpointMode: EXACTLY_ONCE
-  checkpointInterval: 5ms
+  checkpointInterval: 500ms
   watermarkInterval: 5s
   restartAttempts: 100
   delayBetweenAttempts: 5s
@@ -34,8 +34,10 @@ flink:
 sourceConfigs:
   ## All the source configs should be key/value based, like:
   ## some-key: some-value
+  pulsar.source.maxFetchTime: 100
 
 # Add extra sink config options.
 sinkConfigs:
   ## All the sink configs should be key/value based, like:
   ## some-key: some-value
+  pulsar.producer.sendTimeoutMs: 0
