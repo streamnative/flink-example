@@ -6,6 +6,7 @@ to use this connector.
 ## The example list
 
 1. `SimpleSource`: Consuming the message from Pulsar by using Flink's `StringSchema`.
+2. `SimpleSink`: Write the message into Pulsar by using Flink's `StringSchema`.
 
 ## How to use
 
