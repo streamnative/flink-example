@@ -18,30 +18,35 @@
 
 package io.streamnative.flink.example;
 
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.connector.pulsar.source.PulsarSource;
-import org.apache.flink.connector.pulsar.source.enumerator.cursor.StartCursor;
-import org.apache.flink.connector.pulsar.source.enumerator.cursor.StopCursor;
+import org.apache.flink.connector.base.DeliveryGuarantee;
+import org.apache.flink.connector.pulsar.sink.PulsarSink;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import io.streamnative.flink.example.common.FakerSourceFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static java.time.Duration.ofMinutes;
 import static java.time.Duration.ofSeconds;
-import static org.apache.flink.api.common.eventtime.WatermarkStrategy.forBoundedOutOfOrderness;
-import static org.apache.flink.connector.pulsar.source.PulsarSourceOptions.PULSAR_MAX_FETCH_TIME;
-import static org.apache.flink.connector.pulsar.source.reader.deserializer.PulsarDeserializationSchema.flinkSchema;
-import static org.apache.flink.streaming.api.CheckpointingMode.EXACTLY_ONCE;
-import static org.apache.pulsar.client.api.SubscriptionType.Shared;
+import static org.apache.flink.connector.pulsar.sink.writer.serializer.PulsarSerializationSchema.flinkSchema;
 
 /**
- * This example is used for consuming message from Pulsar.
+ * This example is used for writing message into Pulsar.
+ * We use at-least-once semantic.
  */
-public final class SimpleSource {
+public class SimpleSink {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleSink.class);
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        env.getCheckpointConfig().setCheckpointingMode(EXACTLY_ONCE);
+        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
         env.getCheckpointConfig().setCheckpointInterval(ofMinutes(5).toMillis());
         env.getConfig().setAutoWatermarkInterval(ofSeconds(5).toMillis());
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(Integer.MAX_VALUE, ofSeconds(10).toMillis()));
@@ -49,23 +54,28 @@ public final class SimpleSource {
         // Set the default parallelism to 4.
         env.setParallelism(4);
 
-        // Create a Pulsar source, it would consume messages from Pulsar by "tp" topic.
-        PulsarSource<String> pulsarSource = PulsarSource.builder()
+        // Create a fake source.
+        DataStreamSource<String> source = env.addSource(new FakerSourceFunction());
+
+        // Create Pulsar sink.
+        PulsarSink<String> sink = PulsarSink.builder()
             .setServiceUrl("pulsar://127.0.0.1:6650")
             .setAdminUrl("http://127.0.0.1:8080")
-            .setStartCursor(StartCursor.earliest())
-            .setUnboundedStopCursor(StopCursor.never())
             .setTopics("persistent://sample/flink/simple-string")
-            .setDeserializationSchema(flinkSchema(new SimpleStringSchema()))
-            .setSubscriptionName("flink-source")
-            .setSubscriptionType(Shared)
-            .setConfig(PULSAR_MAX_FETCH_TIME, 100L)
+            .setSerializationSchema(flinkSchema(new SimpleStringSchema()))
+            .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
             .build();
 
-        // Pulsar Source don't require extra TypeInformation be provided.
-        env.fromSource(pulsarSource, forBoundedOutOfOrderness(ofMinutes(5)), "pulsar-source")
-            .print();
+        source.map(new MapFunction<String, String>() {
+            private static final long serialVersionUID = -4782508933535702921L;
 
-        env.execute("Simple Pulsar Source");
+            @Override
+            public String map(String s) {
+                LOG.info("Write \"{}\" into Pulsar.", s);
+                return s;
+            }
+        }).sinkTo(sink);
+
+        env.execute("Simple Pulsar Sink");
     }
 }

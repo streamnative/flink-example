@@ -29,12 +29,15 @@ under the License.
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<flink.version>1.14-SNAPSHOT</flink.version>
 		<target.java.version>1.8</target.java.version>
-		<scala.binary.version>2.11</scala.binary.version>
 		<maven.compiler.source>${target.java.version}</maven.compiler.source>
 		<maven.compiler.target>${target.java.version}</maven.compiler.target>
-		<log4j.version>2.14.1</log4j.version>
+
+		<flink.version>1.15-SNAPSHOT</flink.version>
+		<log4j.version>2.17.2</log4j.version>
+		<datafaker.version>1.2.0</datafaker.version>
+		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
 	</properties>
 
 	<repositories>
@@ -62,28 +65,26 @@ under the License.
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
+			<artifactId>flink-streaming-java</artifactId>
 			<version>${flink.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-clients_${scala.binary.version}</artifactId>
+			<artifactId>flink-clients</artifactId>
 			<version>${flink.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
-
+		<!-- Pulsar connector dependencies -->
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-runtime-web_${scala.binary.version}</artifactId>
+			<artifactId>flink-connector-base</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-connector-pulsar_${scala.binary.version}</artifactId>
+			<artifactId>flink-connector-pulsar</artifactId>
 			<version>${flink.version}</version>
 		</dependency>
 
@@ -107,16 +108,22 @@ under the License.
 			<version>${log4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- Use datafaker for generating test data. -->
+		<dependency>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<version>${datafaker.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-
 			<!-- Java Compiler -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${target.java.version}</source>
 					<target>${target.java.version}</target>
@@ -128,7 +135,7 @@ under the License.
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
+				<version>${maven-shade-plugin.version}</version>
 				<executions>
 					<!-- Run shade goal on package phase -->
 					<execution>
@@ -139,7 +146,7 @@ under the License.
 						<configuration>
 							<artifactSet>
 								<excludes>
-									<exclude>org.apache.flink:force-shading</exclude>
+									<exclude>org.apache.flink:flink-shaded-force-shading</exclude>
 									<exclude>com.google.code.findbugs:jsr305</exclude>
 									<exclude>org.slf4j:*</exclude>
 									<exclude>org.apache.logging.log4j:*</exclude>
@@ -158,9 +165,10 @@ under the License.
 								</filter>
 							</filters>
 							<transformers>
+								<!-- Change this to your main class -->
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>io.streamnative.flink.example.StreamingJob</mainClass>
+									<mainClass>io.streamnative.flink.example.SimpleSource</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
