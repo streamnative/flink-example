@@ -67,7 +67,17 @@ To install `pulsarctl` on the Windows operating system, follow these steps:
 
 All the code snippet shown below was using `pulsarctl`. You can convert it to Pulsar scripts by reading [the documentation](https://pulsar.apache.org/docs/en/admin-api-overview/) for the Pulsar admin interface.
 
-1. Create the `sample` tenant on Pulsar.
+1. Create and use pulsarctl's context for connecting to a Pulsar standalone instance.
+
+```shell
+## Change the 192.168.50.8 to your Pulsar standalone address. 
+pulsarctl context set development --admin-service-url="http://192.168.50.8:8080"
+
+## Use the created context
+pulsarctl context use development
+```
+
+2. Create the `sample` tenant on Pulsar.
 
 ```shell
 ## Mark sure you have the standalone cluster.
@@ -77,13 +87,13 @@ pulsarctl clusters list standalone
 pulsarctl tenants create sample --allowed-clusters="standalone"
 ```
 
-2. Create the `flink` namespace below `sample` tenant.
+3. Create the `flink` namespace below `sample` tenant.
 
 ```shell
 pulsarctl namespaces create sample/flink
 ```
 
-3. Create topic `simple-string` with 8 partition under `flink` namespace.
+4. Create topic `simple-string` with 8 partition under `flink` namespace.
 
 ```shell
 pulsarctl topics create sample/flink/simple-string 8
