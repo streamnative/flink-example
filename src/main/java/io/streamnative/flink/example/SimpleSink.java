@@ -65,7 +65,7 @@ public class SimpleSink {
             .setTopics("persistent://sample/flink/simple-string")
             .setProducerName("flink-sink-%s")
             .setSerializationSchema(flinkSchema(new SimpleStringSchema()))
-            .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+            .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
             .setProperties(toProperties(configs.sinkConfigs()))
             .build();
 

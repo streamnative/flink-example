@@ -11,36 +11,19 @@ to use this connector.
 
 ### Prepare the environment.
 
-#### Manually
-
-Download and set up a standalone Pulsar locally. Read this [tutorial](https://pulsar.apache.org/docs/en/standalone/) and enable the transaction in Pulsar.
-
-#### Homebrew (for macOS and Linux)
-
-If you use Homebrew, you can download our pre-written [Formula](https://github.com/streamnative/homebrew-streamnative). Just execute these commands below.
+We use docker to run an operable Pulsar environment. All the thing you need to do is just one command.
 
 ```shell
-brew tap streamnative/streamnative
+cd "${this flink-example project directory}"
 
-## Without install OpenJDK
-brew install pulsar
-
-## With an OpenJDK provided by Homebrew
-brew install pulsar --with-openjdk
+docker run -it \
+  -p 6650:6650 \
+  -p 8080:8080 \
+  --mount source=data,target=/pulsar/data \
+  --mount type=bind,source=src/main/resources/standalone.conf,target=/pulsar/conf/standalone.conf \
+  apachepulsar/pulsar:2.9.1 \
+  bin/pulsar standalone
 ```
-
-Then you need modify the broker configuration for enabling the Transaction manager.
-
-```shell
-cd `brew --prefix pulsar`
-
-cd libexec/conf
-
-vi standalone.conf
-```
-
-Change the `transactionCoordinatorEnabled=false` to `transactionCoordinatorEnabled=true`.
-Start Pulsar standalone by executing `pulsar standalone`.
 
 ### Install `pulsarctl`
 
