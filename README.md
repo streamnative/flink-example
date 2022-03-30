@@ -16,11 +16,11 @@ We use docker to run an operable Pulsar environment. All the thing you need to d
 ```shell
 cd "${this flink-example project directory}"
 
-docker run -it \
+sudo docker run -it \
   -p 6650:6650 \
   -p 8080:8080 \
-  --mount source=data,target=/pulsar/data \
-  --mount type=bind,source=src/main/resources/standalone.conf,target=/pulsar/conf/standalone.conf \
+  --mount type=bind,source=${PWD}/data,target=/pulsar/data \
+  --mount type=bind,source=${PWD}/src/main/resources/standalone.conf,target=/pulsar/conf/standalone.conf \
   apachepulsar/pulsar:2.9.1 \
   bin/pulsar standalone
 ```

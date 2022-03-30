@@ -18,23 +18,21 @@
 
 package io.streamnative.flink.example;
 
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.pulsar.source.PulsarSource;
 import org.apache.flink.connector.pulsar.source.enumerator.cursor.StartCursor;
 import org.apache.flink.connector.pulsar.source.enumerator.cursor.StopCursor;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import io.streamnative.flink.example.common.ApplicationConfigs;
+import io.streamnative.flink.example.config.ApplicationConfigs;
 
-import static io.streamnative.flink.example.common.ApplicationConfigs.loadConfig;
-import static io.streamnative.flink.example.common.ApplicationConfigs.toProperties;
+import static io.streamnative.flink.example.common.EnvironmentUtils.createEnvironment;
+import static io.streamnative.flink.example.config.ApplicationConfigs.loadConfig;
 import static java.time.Duration.ofMinutes;
-import static java.time.Duration.ofSeconds;
 import static org.apache.flink.api.common.eventtime.WatermarkStrategy.forBoundedOutOfOrderness;
+import static org.apache.flink.configuration.Configuration.fromMap;
 import static org.apache.flink.connector.pulsar.source.PulsarSourceOptions.PULSAR_MAX_FETCH_TIME;
 import static org.apache.flink.connector.pulsar.source.reader.deserializer.PulsarDeserializationSchema.flinkSchema;
-import static org.apache.flink.streaming.api.CheckpointingMode.EXACTLY_ONCE;
 import static org.apache.pulsar.client.api.SubscriptionType.Shared;
 
 /**
@@ -47,14 +45,8 @@ public final class SimpleSource {
         ApplicationConfigs configs = loadConfig();
 
         // Create execution environment
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.getCheckpointConfig().setCheckpointingMode(EXACTLY_ONCE);
-        env.getCheckpointConfig().setCheckpointInterval(ofMinutes(5).toMillis());
-        env.getConfig().setAutoWatermarkInterval(ofSeconds(5).toMillis());
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(Integer.MAX_VALUE, ofSeconds(10).toMillis()));
-
-        // Set the default parallelism to 4.
-        env.setParallelism(configs.parallelism());
+        // Create execution environment
+        StreamExecutionEnvironment env = createEnvironment(configs);
 
         // Create a Pulsar source, it would consume messages from Pulsar by "tp" topic.
         PulsarSource<String> pulsarSource = PulsarSource.builder()
@@ -68,7 +60,7 @@ public final class SimpleSource {
             .setConsumerName("flink-source-%s")
             .setSubscriptionType(Shared)
             .setConfig(PULSAR_MAX_FETCH_TIME, 100L)
-            .setProperties(toProperties(configs.sourceConfigs()))
+            .setConfig(fromMap(configs.sourceConfigs()))
             .build();
 
         // Pulsar Source don't require extra TypeInformation be provided.

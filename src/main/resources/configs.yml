@@ -1,9 +1,22 @@
+# Change this to your docker daemon address.
 serviceUrl: pulsar://192.168.50.8:6650
 adminUrl: http://192.168.50.8:8080
-parallelism: 4
+
+# Flink related configuration.
+flink:
+  parallelism: 4
+  checkpointMode: EXACTLY_ONCE
+  checkpointInterval: 5ms
+  watermarkInterval: 5s
+  restartAttempts: 100
+  delayBetweenAttempts: 5s
 
 # Add extra source config options.
-sourceConfigs: {}
+sourceConfigs:
+  ## All the source configs should be key/value based, like:
+  ## some-key: some-value
 
 # Add extra sink config options.
-sinkConfigs: {}
+sinkConfigs:
+  ## All the sink configs should be key/value based, like:
+  ## some-key: some-value

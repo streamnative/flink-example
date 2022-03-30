@@ -18,26 +18,23 @@
 
 package io.streamnative.flink.example;
 
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.base.DeliveryGuarantee;
 import org.apache.flink.connector.pulsar.sink.PulsarSink;
-import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import io.streamnative.flink.example.common.ApplicationConfigs;
+import io.streamnative.flink.example.common.EnvironmentUtils;
 import io.streamnative.flink.example.common.FakerSourceFunction;
+import io.streamnative.flink.example.config.ApplicationConfigs;
 
-import static io.streamnative.flink.example.common.ApplicationConfigs.loadConfig;
-import static io.streamnative.flink.example.common.ApplicationConfigs.toProperties;
-import static java.time.Duration.ofMinutes;
-import static java.time.Duration.ofSeconds;
+import static io.streamnative.flink.example.config.ApplicationConfigs.loadConfig;
+import static org.apache.flink.configuration.Configuration.fromMap;
 import static org.apache.flink.connector.pulsar.sink.writer.serializer.PulsarSerializationSchema.flinkSchema;
 
 /**
  * This example is used for writing message into Pulsar.
- * We use at-least-once semantic.
+ * We use exactly-once semantic.
  */
 public class SimpleSink {
 
@@ -46,14 +43,7 @@ public class SimpleSink {
         ApplicationConfigs configs = loadConfig();
 
         // Create execution environment
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
-        env.getCheckpointConfig().setCheckpointInterval(ofMinutes(5).toMillis());
-        env.getConfig().setAutoWatermarkInterval(ofSeconds(5).toMillis());
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(Integer.MAX_VALUE, ofSeconds(10).toMillis()));
-
-        // Set the default parallelism to 4.
-        env.setParallelism(configs.parallelism());
+        StreamExecutionEnvironment env = EnvironmentUtils.createEnvironment(configs);
 
         // Create a fake source.
         DataStreamSource<String> source = env.addSource(new FakerSourceFunction());
@@ -65,8 +55,8 @@ public class SimpleSink {
             .setTopics("persistent://sample/flink/simple-string")
             .setProducerName("flink-sink-%s")
             .setSerializationSchema(flinkSchema(new SimpleStringSchema()))
-            .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
-            .setProperties(toProperties(configs.sinkConfigs()))
+            .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+            .setConfig(fromMap(configs.sinkConfigs()))
             .build();
 
         source.sinkTo(sink);
