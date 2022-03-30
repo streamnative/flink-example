@@ -44,10 +44,9 @@ public final class SimpleSource {
         ApplicationConfigs configs = loadConfig();
 
         // Create execution environment
-        // Create execution environment
         StreamExecutionEnvironment env = createEnvironment(configs);
 
-        // Create a Pulsar source, it would consume messages from Pulsar by "tp" topic.
+        // Create a Pulsar source, it would consume messages from Pulsar on "sample/flink/simple-string" topic.
         PulsarSource<String> pulsarSource = PulsarSource.builder()
             .setServiceUrl(configs.serviceUrl())
             .setAdminUrl(configs.adminUrl())

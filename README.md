@@ -109,4 +109,7 @@ Execute `pulsarctl topics list sample/flink` make sure we would list a set of to
 
 ### Execute the program in IntelliJ IDEA
 
+All the required configurations are defined in `configs.yml` file. Change the `serviceUrl` and `adminUrl` to your
+pulsar standalone address.
+
 We share the IDEA run configuration in `.run` directory. You can choose the example case in IDEA's `Run Configuration` and execute it.
