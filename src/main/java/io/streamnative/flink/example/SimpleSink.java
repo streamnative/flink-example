@@ -24,10 +24,10 @@ import org.apache.flink.connector.pulsar.sink.PulsarSink;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import io.streamnative.flink.example.common.EnvironmentUtils;
 import io.streamnative.flink.example.common.FakerSourceFunction;
 import io.streamnative.flink.example.config.ApplicationConfigs;
 
+import static io.streamnative.flink.example.common.EnvironmentUtils.createEnvironment;
 import static io.streamnative.flink.example.config.ApplicationConfigs.loadConfig;
 import static org.apache.flink.configuration.Configuration.fromMap;
 import static org.apache.flink.connector.pulsar.sink.writer.serializer.PulsarSerializationSchema.flinkSchema;
@@ -43,7 +43,7 @@ public class SimpleSink {
         ApplicationConfigs configs = loadConfig();
 
         // Create execution environment
-        StreamExecutionEnvironment env = EnvironmentUtils.createEnvironment(configs);
+        StreamExecutionEnvironment env = createEnvironment(configs);
 
         // Create a fake source.
         DataStreamSource<String> source = env.addSource(new FakerSourceFunction());
