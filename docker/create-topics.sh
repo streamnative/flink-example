@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,46 +18,10 @@
 # under the License.
 # ----------------------------------------------------------------------------
 
-# EditorConfig helps developers define and maintain consistent
-# coding styles between different editors and IDEs
-# editorconfig.org
-root = true
+command -v pulsarctl >/dev/null 2>&1 || { echo >&2 "Require pulsarctl but it's not installed. Aborting."; exit 1; }
 
-[*]
-
-# Change these settings to your own preference
-indent_style = space
-indent_size = 4
-
-# We recommend you to keep these unchanged
-end_of_line = lf
-charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
-
-[*.java]
-continuation_indent_size = 4
-
-[*.md]
-trim_trailing_whitespace = false
-
-[*.json]
-indent_size = 2
-
-[*.yml]
-indent_size = 2
-
-[*.sql]
-indent_size = 2
-
-[*.kt]
-indent_size = 2
-
-[*.sh]
-indent_size = 2
-
-[*.cmd]
-end_of_line = crlf
-
-[pom.xml]
-indent_style = tab
+pulsarctl clusters list standalone
+pulsarctl tenants create sample --allowed-clusters="standalone"
+pulsarctl namespaces create sample/flink
+pulsarctl topics create sample/flink/simple-string 8
+pulsarctl topics list sample/flink
