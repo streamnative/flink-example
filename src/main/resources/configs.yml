@@ -1,0 +1,9 @@
+serviceUrl: pulsar://192.168.50.8:6650
+adminUrl: http://192.168.50.8:8080
+parallelism: 4
+
+# Add extra source config options.
+sourceConfigs: {}
+
+# Add extra sink config options.
+sinkConfigs: {}

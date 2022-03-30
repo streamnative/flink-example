@@ -36,6 +36,8 @@ under the License.
 		<flink.version>1.15-SNAPSHOT</flink.version>
 		<log4j.version>2.17.2</log4j.version>
 		<datafaker.version>1.2.0</datafaker.version>
+		<confij.version>0.6.5</confij.version>
+		<lombok.version>1.18.22</lombok.version>
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
 	</properties>
@@ -114,6 +116,19 @@ under the License.
 			<groupId>net.datafaker</groupId>
 			<artifactId>datafaker</artifactId>
 			<version>${datafaker.version}</version>
+		</dependency>
+		<!-- Config loader -->
+		<dependency>
+			<groupId>ch.kk7</groupId>
+			<artifactId>confij-yaml</artifactId>
+			<version>0.6.5</version>
+		</dependency>
+		<!-- bytecode generator -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

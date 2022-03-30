@@ -23,6 +23,7 @@ import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunctio
 
 import org.apache.flink.shaded.guava30.com.google.common.util.concurrent.Uninterruptibles;
 
+import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 
 import java.util.Random;
@@ -31,16 +32,21 @@ import java.util.concurrent.TimeUnit;
 /**
  * A source function which would generate an infinite name stream.
  */
+@Slf4j
 public class FakerSourceFunction extends RichParallelSourceFunction<String> {
     private static final long serialVersionUID = 6879785309829729896L;
 
     private transient Faker faker;
+    private transient int taskId;
     private volatile boolean cancelled;
 
     @Override
     public void run(SourceContext<String> sourceContext) {
         while (!cancelled) {
-            sourceContext.collect(faker.name().fullName());
+            String message = taskId + " - " + faker.name().fullName();
+            log.info("Generate message: {}", message);
+
+            sourceContext.collect(message);
             Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
         }
     }
@@ -53,6 +59,8 @@ public class FakerSourceFunction extends RichParallelSourceFunction<String> {
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
+
         this.faker = new Faker(new Random());
+        this.taskId = getRuntimeContext().getIndexOfThisSubtask();
     }
 }

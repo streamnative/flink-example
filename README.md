@@ -11,9 +11,13 @@ to use this connector.
 
 ### Prepare the environment.
 
-Download and set up a standalone Pulsar locally. Read this [tutorial](https://pulsar.apache.org/docs/en/standalone/) and config the Pulsar one by one.
+#### Manually
 
-If you use macOS and Homebrew, you can use our  pre-written [Formula](https://github.com/streamnative/homebrew-streamnative). Just execute these commands below.
+Download and set up a standalone Pulsar locally. Read this [tutorial](https://pulsar.apache.org/docs/en/standalone/) and enable the transaction in Pulsar.
+
+#### Homebrew (for macOS and Linux)
+
+If you use Homebrew, you can download our pre-written [Formula](https://github.com/streamnative/homebrew-streamnative). Just execute these commands below.
 
 ```shell
 brew tap streamnative/streamnative
@@ -25,13 +29,26 @@ brew install pulsar
 brew install pulsar --with-openjdk
 ```
 
+Then you need modify the broker configuration for enabling the Transaction manager.
+
+```shell
+cd `brew --prefix pulsar`
+
+cd libexec/conf
+
+vi standalone.conf
+```
+
+Change the `transactionCoordinatorEnabled=false` to `transactionCoordinatorEnabled=true`.
+Start Pulsar standalone by executing `pulsar standalone`.
+
 ### Install `pulsarctl`
 
 After install and setup the Pulsar standalone, we need some management tools for operating on the Pulsar cluster. We prefer to use [pulsarctl](https://github.com/streamnative/pulsarctl) because it supports shell auto-completion. You can skip this section if you want to use the scripts bundled in Pulsar distribution.
 
-#### Mac operation system
+#### Mac operating system
 
-Use [homebrew](https://brew.sh/) to install `pulsarctl` on the Mac operation system.
+Use [homebrew](https://brew.sh/) to install `pulsarctl` on the Mac operating system.
 
 ```bash
 brew tap streamnative/streamnative
@@ -40,17 +57,17 @@ brew install pulsarctl
 
 We would auto install zsh-completion and bash-completion when you use Homebrew.
 
-#### Linux operation system
+#### Linux operating system
 
-Use this command to install `pulsarctl` on the Linux operation system.
+Use this command to install `pulsarctl` on the Linux operating system.
 
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/streamnative/pulsarctl/master/install.sh)"
 ```
 
-#### Windows operation system
+#### Windows operating system
 
-To install `pulsarctl` on the Windows operation system, follow these steps:
+To install `pulsarctl` on the Windows operating system, follow these steps:
 
 1. Download the package from [here](https://github.com/streamnative/pulsarctl/releases).
 2. Add the `pulsarctl` directory to your system PATH.
