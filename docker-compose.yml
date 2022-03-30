@@ -1,0 +1,13 @@
+version: "3.4"
+services:
+  pulsar:
+    image: apachepulsar/pulsar:2.9.1
+    container_name: PulsarForFlink
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    volumes:
+      - ./docker/data:/pulsar/data
+      - ./docker/config/standalone.conf:/pulsar/conf/standalone.conf
+    restart: always
+    command: ["bin/pulsar", "standalone"]

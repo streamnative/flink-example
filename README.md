@@ -11,6 +11,8 @@ to use this connector.
 
 ### Prepare the environment.
 
+#### Docker command.
+
 We use docker to run an operable Pulsar environment. All the thing you need to do is just one command.
 
 ```shell
@@ -19,11 +21,15 @@ cd "${this flink-example project directory}"
 sudo docker run -it \
   -p 6650:6650 \
   -p 8080:8080 \
-  --mount type=bind,source=${PWD}/data,target=/pulsar/data \
-  --mount type=bind,source=${PWD}/src/main/resources/standalone.conf,target=/pulsar/conf/standalone.conf \
+  --mount type=bind,source=${PWD}/docker/data,target=/pulsar/data \
+  --mount type=bind,source=${PWD}/docker/config/standalone.conf,target=/pulsar/conf/standalone.conf \
   apachepulsar/pulsar:2.9.1 \
   bin/pulsar standalone
 ```
+
+#### Docker Compose
+
+Docker compose is quite easy to use. Simply execute `docker-compose up` in project root directory. 
 
 ### Install `pulsarctl`
 
