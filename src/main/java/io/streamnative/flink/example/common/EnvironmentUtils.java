@@ -18,6 +18,8 @@
 
 package io.streamnative.flink.example.common;
 
+import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
+import org.apache.flink.runtime.state.storage.JobManagerCheckpointStorage;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import io.streamnative.flink.example.config.ApplicationConfigs;
@@ -40,11 +42,13 @@ public final class EnvironmentUtils {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.getCheckpointConfig().setCheckpointingMode(flinkConfigs.checkpointMode());
         env.getCheckpointConfig().setCheckpointInterval(flinkConfigs.checkpointInterval().toMillis());
-        env.getConfig().setAutoWatermarkInterval(flinkConfigs.watermarkInterval().toMillis());
+        env.getConfig().setAutoWatermarkInterval(flinkConfigs.autoWatermarkInterval().toMillis());
         env.setRestartStrategy(fixedDelayRestart(flinkConfigs.restartAttempts(), flinkConfigs.delayBetweenAttempts().toMillis()));
-
-        // Set the default parallelism to 4.
         env.setParallelism(flinkConfigs.parallelism());
+
+        // These configs are only used for test purpose.
+        env.getCheckpointConfig().setCheckpointStorage(new JobManagerCheckpointStorage());
+        env.setStateBackend(new HashMapStateBackend());
 
         return env;
     }

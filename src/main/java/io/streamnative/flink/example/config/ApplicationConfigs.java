@@ -48,7 +48,7 @@ public interface ApplicationConfigs {
 
         Duration checkpointInterval();
 
-        Duration watermarkInterval();
+        Duration autoWatermarkInterval();
 
         int restartAttempts();
 

@@ -25,8 +25,8 @@ adminUrl: http://192.168.50.8:8080
 flink:
   parallelism: 4
   checkpointMode: EXACTLY_ONCE
-  checkpointInterval: 500ms
-  watermarkInterval: 5s
+  checkpointInterval: 5s
+  autoWatermarkInterval: 5s
   restartAttempts: 100
   delayBetweenAttempts: 5s
 
