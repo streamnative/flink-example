@@ -40,8 +40,6 @@ public interface ApplicationConfigs {
 
     Map<String, String> sinkConfigs();
 
-    Map<String, String> flinkConfigs();
-
     interface FlinkConfigs {
 
         int parallelism();
@@ -55,6 +53,8 @@ public interface ApplicationConfigs {
         int restartAttempts();
 
         Duration delayBetweenAttempts();
+
+        Map<String, String> options();
     }
 
     static ApplicationConfigs loadConfig() {

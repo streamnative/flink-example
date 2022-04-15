@@ -56,6 +56,6 @@ public final class EnvironmentUtils {
     }
 
     private static Configuration createConfiguration(ApplicationConfigs applicationConfigs) {
-        return Configuration.fromMap(applicationConfigs.flinkConfigs());
+        return Configuration.fromMap(applicationConfigs.flink().options());
     }
 }

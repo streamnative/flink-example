@@ -29,12 +29,11 @@ flink:
   autoWatermarkInterval: 5s
   restartAttempts: 100
   delayBetweenAttempts: 5s
-
-# Flink related config options.
-flinkConfigs:
-  ## All the flink configs should be key/value based, like:
-  ## some-key: some-value
-  web.log.path: ./logs
+  # Flink related config options. All the options in flink document could be set here
+  options:
+    ## All the flink configs should be key/value based, like:
+    ## some-key: some-value
+    web.log.path: ./logs
 
 # Add extra source config options.
 sourceConfigs:
