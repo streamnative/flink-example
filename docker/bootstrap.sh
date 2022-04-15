@@ -24,4 +24,4 @@ sed -i 's/acknowledgmentAtBatchIndexLevelEnabled=false/acknowledgmentAtBatchInde
 sed -i 's/systemTopicEnabled=false/systemTopicEnabled=true/g' /pulsar/conf/standalone.conf
 
 # Start Pulsar standalone.
-/pulsar/bin/pulsar standalone
+/pulsar/bin/pulsar standalone --no-functions-worker -nss
