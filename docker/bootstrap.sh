@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,15 +18,8 @@
 # under the License.
 # ----------------------------------------------------------------------------
 
-version: "3.4"
-services:
-  pulsar:
-    image: apachepulsar/pulsar:2.10.0
-    container_name: PulsarForFlink
-    ports:
-      - "6650:6650"
-      - "8080:8080"
-    volumes:
-      - ./docker/bootstrap.sh:/pulsar/bin/bootstrap.sh
-    restart: always
-    command: ["/pulsar/bin/bootstrap.sh"]
+# Enable the transaction in standalone config.
+sed -i 's/transactionCoordinatorEnabled=false/transactionCoordinatorEnabled=true/g' /pulsar/conf/standalone.conf
+
+# Start Pulsar standalone.
+/pulsar/bin/pulsar standalone
