@@ -27,6 +27,7 @@ services:
     ports:
       - "6650:6650"
       - "8080:8080"
+      - "2181:2181"
     volumes:
       - ./docker/data:/pulsar/data
       - ./docker/bootstrap.sh:/pulsar/bin/bootstrap.sh
