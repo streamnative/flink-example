@@ -18,6 +18,7 @@
 
 package io.streamnative.flink.example.common;
 
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 import org.apache.flink.runtime.state.storage.JobManagerCheckpointStorage;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -39,7 +40,8 @@ public final class EnvironmentUtils {
     public static StreamExecutionEnvironment createEnvironment(ApplicationConfigs applicationConfigs) {
         FlinkConfigs flinkConfigs = applicationConfigs.flink();
 
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        Configuration configuration = createConfiguration(applicationConfigs);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment(configuration);
         env.getCheckpointConfig().setCheckpointingMode(flinkConfigs.checkpointMode());
         env.getCheckpointConfig().setCheckpointInterval(flinkConfigs.checkpointInterval().toMillis());
         env.getConfig().setAutoWatermarkInterval(flinkConfigs.autoWatermarkInterval().toMillis());
@@ -51,5 +53,9 @@ public final class EnvironmentUtils {
         env.setStateBackend(new HashMapStateBackend());
 
         return env;
+    }
+
+    private static Configuration createConfiguration(ApplicationConfigs applicationConfigs) {
+        return Configuration.fromMap(applicationConfigs.flinkConfigs());
     }
 }

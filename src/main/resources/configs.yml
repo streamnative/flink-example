@@ -30,6 +30,12 @@ flink:
   restartAttempts: 100
   delayBetweenAttempts: 5s
 
+# Flink related config options.
+flinkConfigs:
+  ## All the flink configs should be key/value based, like:
+  ## some-key: some-value
+  web.log.path: ./logs
+
 # Add extra source config options.
 sourceConfigs:
   ## All the source configs should be key/value based, like:

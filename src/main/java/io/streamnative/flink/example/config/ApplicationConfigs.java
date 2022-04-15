@@ -40,6 +40,8 @@ public interface ApplicationConfigs {
 
     Map<String, String> sinkConfigs();
 
+    Map<String, String> flinkConfigs();
+
     interface FlinkConfigs {
 
         int parallelism();

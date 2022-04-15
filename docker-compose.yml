@@ -26,6 +26,7 @@ services:
       - "6650:6650"
       - "8080:8080"
     volumes:
+      - ./docker/data:/pulsar/data
       - ./docker/bootstrap.sh:/pulsar/bin/bootstrap.sh
     restart: always
     command: ["/pulsar/bin/bootstrap.sh"]
