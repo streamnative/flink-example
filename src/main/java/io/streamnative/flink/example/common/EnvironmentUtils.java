@@ -39,8 +39,8 @@ public final class EnvironmentUtils {
 
     public static StreamExecutionEnvironment createEnvironment(ApplicationConfigs applicationConfigs) {
         FlinkConfigs flinkConfigs = applicationConfigs.flink();
+        Configuration configuration = Configuration.fromMap(flinkConfigs.options());
 
-        Configuration configuration = createConfiguration(applicationConfigs);
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment(configuration);
         env.getCheckpointConfig().setCheckpointingMode(flinkConfigs.checkpointMode());
         env.getCheckpointConfig().setCheckpointInterval(flinkConfigs.checkpointInterval().toMillis());
@@ -53,9 +53,5 @@ public final class EnvironmentUtils {
         env.setStateBackend(new HashMapStateBackend());
 
         return env;
-    }
-
-    private static Configuration createConfiguration(ApplicationConfigs applicationConfigs) {
-        return Configuration.fromMap(applicationConfigs.flink().options());
     }
 }
