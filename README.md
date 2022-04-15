@@ -1,7 +1,7 @@
 # Flink Pulsar Integration Related Examples
 
-We provided a set of examples on using the latest `flink-connector-pulsar` in the Flink repository. Showing the user how
-to use this connector.
+We provided a set of examples on using the latest `flink-connector-pulsar` in the Flink repository.
+Showing the user how to use this connector.
 
 ## The example list
 
@@ -10,7 +10,11 @@ to use this connector.
 
 ## How to use
 
-### Prepare the environment
+### Prepare the Pulsar instance
+
+#### Docker Compose (Recommend)
+
+Docker compose is quite easy to use. Simply execute `docker-compose up` in project root directory.
 
 #### Docker command
 
@@ -23,18 +27,16 @@ sudo docker run -it \
   -p 6650:6650 \
   -p 8080:8080 \
   --mount type=bind,source=${PWD}/docker/data,target=/pulsar/data \
-  --mount type=bind,source=${PWD}/docker/config/standalone.conf,target=/pulsar/conf/standalone.conf \
-  apachepulsar/pulsar:2.9.1 \
-  bin/pulsar standalone
+  --mount type=bind,source=${PWD}/docker/bootstrap.sh,target=/pulsar/bin/bootstrap.sh \
+  apachepulsar/pulsar:2.10.0 \
+  /pulsar/bin/bootstrap.sh
 ```
-
-#### Docker Compose
-
-Docker compose is quite easy to use. Simply execute `docker-compose up` in project root directory. 
 
 ### Install `pulsarctl`
 
-After install and setup the Pulsar standalone, we need some management tools for operating on the Pulsar cluster. We prefer to use [pulsarctl](https://github.com/streamnative/pulsarctl) because it supports shell auto-completion. You can skip this section if you want to use the scripts bundled in Pulsar distribution.
+After install and setup the Pulsar standalone, we need some management tools for operating on the Pulsar cluster.
+We prefer to use [pulsarctl](https://github.com/streamnative/pulsarctl) because it supports shell auto-completion.
+You can skip this section if you want to use the scripts bundled in Pulsar distribution.
 
 #### Mac operating system
 
@@ -65,7 +67,8 @@ To install `pulsarctl` on the Windows operating system, follow these steps:
 
 ### Prepare the test dataset
 
-All the code snippet shown below was using `pulsarctl`. You can convert it to Pulsar scripts by reading [the documentation](https://pulsar.apache.org/docs/en/admin-api-overview/) for the Pulsar admin interface.
+All the code snippet shown below was using `pulsarctl`. You can convert it to Pulsar scripts
+by reading [the documentation](https://pulsar.apache.org/docs/en/admin-api-overview/) for the Pulsar admin interface.
 
 1. Create and use pulsarctl's context for connecting to a Pulsar standalone instance.
 
