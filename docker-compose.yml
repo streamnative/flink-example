@@ -22,6 +22,8 @@ services:
   pulsar:
     image: apachepulsar/pulsar:2.10.0
     container_name: PulsarForFlink
+    user: root
+    privileged: true
     ports:
       - "6650:6650"
       - "8080:8080"
