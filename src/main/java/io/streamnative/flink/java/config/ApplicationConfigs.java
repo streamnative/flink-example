@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.streamnative.flink.example.config;
+package io.streamnative.flink.java.config;
 
 import org.apache.flink.streaming.api.CheckpointingMode;
 

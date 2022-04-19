@@ -44,6 +44,11 @@ under the License.
 		<lombok.version>1.18.22</lombok.version>
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<maven-shade-plugin.version>3.3.0</maven-shade-plugin.version>
+
+		<!-- For scala project -->
+		<scala.binary.version>2.12</scala.binary.version>
+		<scala.version>2.12.15</scala.version>
+		<scala-maven-plugin.version>4.6.1</scala-maven-plugin.version>
 	</properties>
 
 	<repositories>
@@ -77,8 +82,27 @@ under the License.
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-streaming-scala_${scala.binary.version}</artifactId>
+			<version>${flink.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-clients</artifactId>
 			<version>${flink.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-avro</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+
+		<!-- Scala Library, provided by Flink as well. -->
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -203,6 +227,26 @@ under the License.
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<version>${scala-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<args>
+						<arg>-nobootcp</arg>
+						<arg>-target:jvm-${target.java.version}</arg>
+					</args>
+				</configuration>
+			</plugin>
+
 			<!-- We use the maven-shade plugin to create a fat jar that contains all necessary dependencies. -->
 			<!-- Change the value of <mainClass>...</mainClass> if your program entry point changes. -->
 			<plugin>
@@ -241,7 +285,7 @@ under the License.
 								<!-- Change this to your main class -->
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>io.streamnative.flink.example.SimpleSource</mainClass>
+									<mainClass>io.streamnative.flink.java.SimpleSource</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

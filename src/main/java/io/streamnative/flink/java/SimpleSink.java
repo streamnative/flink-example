@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.streamnative.flink.example;
+package io.streamnative.flink.java;
 
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.base.DeliveryGuarantee;
@@ -24,11 +24,13 @@ import org.apache.flink.connector.pulsar.sink.PulsarSink;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import io.streamnative.flink.example.common.FakerSourceFunction;
-import io.streamnative.flink.example.config.ApplicationConfigs;
+import io.streamnative.flink.java.common.FakerGenerator;
+import io.streamnative.flink.java.common.InfiniteSourceFunction;
+import io.streamnative.flink.java.config.ApplicationConfigs;
 
-import static io.streamnative.flink.example.common.EnvironmentUtils.createEnvironment;
-import static io.streamnative.flink.example.config.ApplicationConfigs.loadConfig;
+import static io.streamnative.flink.java.common.EnvironmentUtils.createEnvironment;
+import static io.streamnative.flink.java.config.ApplicationConfigs.loadConfig;
+import static java.time.Duration.ofSeconds;
 import static org.apache.flink.configuration.Configuration.fromMap;
 import static org.apache.flink.connector.pulsar.sink.writer.serializer.PulsarSerializationSchema.flinkSchema;
 
@@ -42,11 +44,12 @@ public class SimpleSink {
         // Load application configs.
         ApplicationConfigs configs = loadConfig();
 
-        // Create execution environment
+        // Create execution environment.
         StreamExecutionEnvironment env = createEnvironment(configs);
 
         // Create a fake source.
-        DataStreamSource<String> source = env.addSource(new FakerSourceFunction());
+        InfiniteSourceFunction<String> sourceFunction = new InfiniteSourceFunction<>(new FakerGenerator(), ofSeconds(1));
+        DataStreamSource<String> source = env.addSource(sourceFunction);
 
         // Create Pulsar sink.
         PulsarSink<String> sink = PulsarSink.builder()

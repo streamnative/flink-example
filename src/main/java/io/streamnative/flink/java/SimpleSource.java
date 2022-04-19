@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.streamnative.flink.example;
+package io.streamnative.flink.java;
 
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.pulsar.source.PulsarSource;
@@ -24,10 +24,10 @@ import org.apache.flink.connector.pulsar.source.enumerator.cursor.StartCursor;
 import org.apache.flink.connector.pulsar.source.enumerator.cursor.StopCursor;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import io.streamnative.flink.example.config.ApplicationConfigs;
+import io.streamnative.flink.java.config.ApplicationConfigs;
 
-import static io.streamnative.flink.example.common.EnvironmentUtils.createEnvironment;
-import static io.streamnative.flink.example.config.ApplicationConfigs.loadConfig;
+import static io.streamnative.flink.java.common.EnvironmentUtils.createEnvironment;
+import static io.streamnative.flink.java.config.ApplicationConfigs.loadConfig;
 import static java.time.Duration.ofMinutes;
 import static org.apache.flink.api.common.eventtime.WatermarkStrategy.forBoundedOutOfOrderness;
 import static org.apache.flink.configuration.Configuration.fromMap;

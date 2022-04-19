@@ -16,38 +16,48 @@
  * limitations under the License.
  */
 
-package io.streamnative.flink.example.common;
+package io.streamnative.flink.java.common;
 
+import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 
 import org.apache.flink.shaded.guava30.com.google.common.util.concurrent.Uninterruptibles;
 
 import lombok.extern.slf4j.Slf4j;
-import net.datafaker.Faker;
 
-import java.util.Random;
+import java.io.Serializable;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
  * A source function which would generate an infinite name stream.
  */
 @Slf4j
-public class FakerSourceFunction extends RichParallelSourceFunction<String> {
+public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> {
     private static final long serialVersionUID = 6879785309829729896L;
 
-    private transient Faker faker;
-    private transient int taskId;
+    private final InfiniteGenerator<T> generator;
+    private final Duration interval;
+
     private volatile boolean cancelled;
 
+    public InfiniteSourceFunction(InfiniteGenerator<T> generator, Duration interval) {
+        this.generator = generator;
+        this.interval = interval;
+    }
+
     @Override
-    public void run(SourceContext<String> sourceContext) {
+    public void run(SourceContext<T> sourceContext) {
         while (!cancelled) {
-            String message = taskId + " - " + faker.name().fullName();
-            log.info("Generate message: {}", message);
+            T message = generator.generate();
+
+            if (log.isInfoEnabled()) {
+                log.info("Write message into Pulsar: {}", message);
+            }
 
             sourceContext.collect(message);
-            Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+            Uninterruptibles.sleepUninterruptibly(interval.toMillis(), TimeUnit.MILLISECONDS);
         }
     }
 
@@ -59,8 +69,22 @@ public class FakerSourceFunction extends RichParallelSourceFunction<String> {
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
+        generator.open(getRuntimeContext());
+    }
 
-        this.faker = new Faker(new Random());
-        this.taskId = getRuntimeContext().getIndexOfThisSubtask();
+    /**
+     * The generator for {@link InfiniteSourceFunction}
+     */
+    public interface InfiniteGenerator<T> extends Serializable {
+
+        /**
+         * Generate a record.
+         */
+        T generate();
+
+        /**
+         * Init a generator.
+         */
+        default void open(RuntimeContext runtimeContext) {}
     }
 }

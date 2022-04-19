@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 
-package io.streamnative.flink.example.common;
+package io.streamnative.flink.java.common;
 
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 import org.apache.flink.runtime.state.storage.JobManagerCheckpointStorage;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import io.streamnative.flink.example.config.ApplicationConfigs;
-import io.streamnative.flink.example.config.ApplicationConfigs.FlinkConfigs;
+import io.streamnative.flink.java.config.ApplicationConfigs;
+import io.streamnative.flink.java.config.ApplicationConfigs.FlinkConfigs;
 
 import static org.apache.flink.api.common.restartstrategy.RestartStrategies.fixedDelayRestart;
 

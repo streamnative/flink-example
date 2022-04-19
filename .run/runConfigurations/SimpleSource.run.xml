@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="SimpleSource" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
-    <option name="MAIN_CLASS_NAME" value="io.streamnative.flink.example.SimpleSource" />
+    <option name="MAIN_CLASS_NAME" value="io.streamnative.flink.java.SimpleSource" />
     <module name="flink-example" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="io.streamnative.flink.example.*" />
+        <option name="PATTERN" value="io.streamnative.flink.java.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
