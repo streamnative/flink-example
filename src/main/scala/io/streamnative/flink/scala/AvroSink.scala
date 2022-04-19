@@ -14,7 +14,7 @@ import org.apache.pulsar.client.api.Schema
 import java.time.Duration.ofSeconds
 
 /**
-  * The application for scala based flink project.
+  * The application for scala based flink project. Writing avro messages into Pulsar.
   */
 object AvroSink extends App {
   // Load application configs.
