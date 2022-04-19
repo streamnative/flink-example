@@ -55,5 +55,4 @@ object AvroSource extends App {
     .print
 
   env.execute("Simple Pulsar Source")
-
 }
