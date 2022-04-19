@@ -7,6 +7,8 @@ Showing the user how to use this connector.
 
 1. `SimpleSource`: Consuming the message from Pulsar by using Flink's `StringSchema`.
 2. `SimpleSink`: Write the message into Pulsar by using Flink's `StringSchema`.
+3. `AvroSink`: Write avro message into Pulsar by Scala and `AvroSchema`.
+4. `AvroSource`: Consuming avro message from Pulsar by Scala and `AvroSchema`.
 
 ## How to use
 
@@ -80,45 +82,7 @@ pulsarctl context set development --admin-service-url="http://192.168.50.8:8080"
 pulsarctl context use development
 ```
 
-2. Create the `sample` tenant on Pulsar.
-
-```shell
-## Mark sure you have the standalone cluster.
-pulsarctl clusters list standalone
-
-## Create tenant
-pulsarctl tenants create sample --allowed-clusters="standalone"
-```
-
-3. Create the `flink` namespace below `sample` tenant.
-
-```shell
-pulsarctl namespaces create sample/flink
-```
-
-4. Create topic `simple-string` with 8 partition under `flink` namespace.
-
-```shell
-pulsarctl topics create sample/flink/simple-string 8
-```
-
-Execute `pulsarctl topics list sample/flink` make sure we would list a set of topics like below.
-
-```text
-+-----------------------------------------------------+---------------+
-|                     TOPIC NAME                      | PARTITIONED ? |
-+-----------------------------------------------------+---------------+
-| persistent://sample/flink/simple-string             | Y             |
-| persistent://sample/flink/simple-string-partition-0 | N             |
-| persistent://sample/flink/simple-string-partition-1 | N             |
-| persistent://sample/flink/simple-string-partition-2 | N             |
-| persistent://sample/flink/simple-string-partition-3 | N             |
-| persistent://sample/flink/simple-string-partition-4 | N             |
-| persistent://sample/flink/simple-string-partition-5 | N             |
-| persistent://sample/flink/simple-string-partition-6 | N             |
-| persistent://sample/flink/simple-string-partition-7 | N             |
-+-----------------------------------------------------+---------------+
-```
+2. Execute the initialization scripts. `docker/create-topics.sh`
 
 ### Execute the program in IntelliJ IDEA
 
