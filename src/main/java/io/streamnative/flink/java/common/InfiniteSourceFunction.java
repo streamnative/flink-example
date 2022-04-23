@@ -19,6 +19,8 @@
 package io.streamnative.flink.java.common;
 
 import org.apache.flink.api.common.functions.RuntimeContext;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 
@@ -34,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  * A source function which would generate an infinite name stream.
  */
 @Slf4j
-public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> {
+public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> implements ResultTypeQueryable<T> {
     private static final long serialVersionUID = 6879785309829729896L;
 
     private final InfiniteGenerator<T> generator;
@@ -72,6 +74,11 @@ public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> {
         generator.open(getRuntimeContext());
     }
 
+    @Override
+    public TypeInformation<T> getProducedType() {
+        return generator.getType();
+    }
+
     /**
      * The generator for {@link InfiniteSourceFunction}
      */
@@ -86,5 +93,7 @@ public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> {
          * Init a generator.
          */
         default void open(RuntimeContext runtimeContext) {}
+
+        TypeInformation<T> getType();
     }
 }

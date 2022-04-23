@@ -25,7 +25,7 @@ object AvroSink extends App {
 
   // Create avro source.
   val sourceFunction =
-    new InfiniteSourceFunction[Message](new Generator(), ofSeconds(1))
+    new InfiniteSourceFunction(new Generator(), ofSeconds(1))
   val source = env.addSource(sourceFunction)
 
   // Create sink schema.

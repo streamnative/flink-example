@@ -90,3 +90,7 @@ All the required configurations are defined in `configs.yml` file. Change the `s
 pulsar standalone address.
 
 We share the IDEA run configuration in `.run` directory. You can choose the example case in IDEA's `Run Configuration` and execute it.
+
+## Reference
+
+* [Apache Pulsar Connector](https://nightlies.apache.org/flink/flink-docs-master/docs/connectors/datastream/pulsar/)

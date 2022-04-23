@@ -2,6 +2,8 @@ package io.streamnative.flink.scala.avro
 
 import io.streamnative.flink.java.common.InfiniteSourceFunction
 import net.datafaker.Faker
+import org.apache.flink.api.common.typeinfo.TypeInformation
+import org.apache.flink.api.scala.typeutils.Types
 
 import java.util.Random
 
@@ -22,4 +24,6 @@ class Generator() extends InfiniteSourceFunction.InfiniteGenerator[Message] {
       faker.programmingLanguage().name(),
       faker.date().birthday().getTime
     )
+
+  override def getType: TypeInformation[Message] = Types.POJO(classOf[Message])
 }

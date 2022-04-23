@@ -1,6 +1,8 @@
 package io.streamnative.flink.java.common;
 
 import org.apache.flink.api.common.functions.RuntimeContext;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.common.typeinfo.Types;
 
 import io.streamnative.flink.java.common.InfiniteSourceFunction.InfiniteGenerator;
 import net.datafaker.Faker;
@@ -26,5 +28,10 @@ public class FakerGenerator implements InfiniteGenerator<String>, Serializable {
     public void open(RuntimeContext runtimeContext) {
         this.faker = new Faker(new Random());
         this.taskId = runtimeContext.getIndexOfThisSubtask();
+    }
+
+    @Override
+    public TypeInformation<String> getType() {
+        return Types.STRING;
     }
 }
