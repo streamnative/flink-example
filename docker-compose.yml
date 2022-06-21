@@ -32,3 +32,40 @@ services:
       - ./docker/bootstrap.sh:/pulsar/bin/bootstrap.sh
     restart: always
     command: ["/pulsar/bin/bootstrap.sh"]
+
+  jobmanager:
+    image: streamnative/pulsar-flink:1.15.0.0-develop-rc7
+    depends_on:
+      - pulsar
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+
+  taskmanager:
+    image: streamnative/pulsar-flink:1.15.0.0-develop-rc7
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+
+  sql-client:
+    image: streamnative/pulsar-flink:1.15.0.0-develop-rc7
+    command: /bin/bash
+    depends_on:
+      - jobmanager
+    volumes:
+      - ./sql-examples:/opt/flink/sql-examples
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+
+

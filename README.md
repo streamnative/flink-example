@@ -16,7 +16,7 @@ Showing the user how to use this connector.
 
 #### Docker Compose (Recommend)
 
-Docker compose is quite easy to use. Simply execute `docker-compose up` in project root directory.
+Docker compose is quite easy to use. Simply execute `docker-compose run pulsar` in project root directory.
 
 #### Docker command
 
@@ -84,12 +84,23 @@ pulsarctl context use development
 
 2. Execute the initialization scripts. `docker/create-topics.sh`
 
-### Execute the program in IntelliJ IDEA
+### Execute the program in IntelliJ IDEA for DataStream Connectors
 
 All the required configurations are defined in `configs.yml` file. Change the `serviceUrl` and `adminUrl` to your
 pulsar standalone address.
 
 We share the IDEA run configuration in `.run` directory. You can choose the example case in IDEA's `Run Configuration` and execute it.
+
+
+### Execute the SQL in docker container
+
+After running docker-compose, we should have a running Flink cluster and connected to the Pulsar container.
+
+We login to the Flink container:
+```bash
+docker-compose run sql-client
+```
+
 
 ## Reference
 
