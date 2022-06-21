@@ -25,4 +25,5 @@ pulsarctl tenants create sample --allowed-clusters="standalone"
 pulsarctl namespaces create sample/flink
 pulsarctl topics create sample/flink/simple-string 8
 pulsarctl topics create sample/flink/scala-avro 8
+pulsarctl topics create sample/flink/user 4
 pulsarctl topics list sample/flink

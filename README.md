@@ -92,15 +92,9 @@ pulsar standalone address.
 We share the IDEA run configuration in `.run` directory. You can choose the example case in IDEA's `Run Configuration` and execute it.
 
 
-### Execute the SQL in docker container
+### Try the SQL Connector in docker container
 
-After running docker-compose, we should have a running Flink cluster and connected to the Pulsar container.
-
-We login to the Flink container:
-```bash
-docker-compose run sql-client
-```
-
+Please go to [SQL examples](./sql-examples/sql-example.md)
 
 ## Reference
 
