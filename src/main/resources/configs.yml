@@ -35,7 +35,7 @@ flink:
     ## some-key: some-value
     web.log.path: ./logs
     ## Enable Web UI on local development.
-    rest.port: 8090
+    rest.port: 8081
 
 # Add extra source config options.
 sourceConfigs:
