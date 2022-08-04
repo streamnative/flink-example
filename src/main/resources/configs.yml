@@ -34,6 +34,8 @@ flink:
     ## All the flink configs should be key/value based, like:
     ## some-key: some-value
     web.log.path: ./logs
+    ## Enable Web UI on local development.
+    rest.port: 8090
 
 # Add extra source config options.
 sourceConfigs:

@@ -32,7 +32,7 @@ import static java.time.Duration.ofMinutes;
 import static org.apache.flink.api.common.eventtime.WatermarkStrategy.forBoundedOutOfOrderness;
 import static org.apache.flink.configuration.Configuration.fromMap;
 import static org.apache.flink.connector.pulsar.source.reader.deserializer.PulsarDeserializationSchema.flinkSchema;
-import static org.apache.pulsar.client.api.SubscriptionType.Shared;
+import static org.apache.pulsar.client.api.SubscriptionType.Failover;
 
 /**
  * This example is used for consuming message from Pulsar.
@@ -56,7 +56,7 @@ public final class SimpleSource {
             .setDeserializationSchema(flinkSchema(new SimpleStringSchema()))
             .setSubscriptionName("flink-source")
             .setConsumerName("flink-source-%s")
-            .setSubscriptionType(Shared)
+            .setSubscriptionType(Failover)
             .setConfig(fromMap(configs.sourceConfigs()))
             .build();
 

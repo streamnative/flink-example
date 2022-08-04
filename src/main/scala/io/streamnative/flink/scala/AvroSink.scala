@@ -11,8 +11,6 @@ import org.apache.flink.connector.pulsar.sink.writer.serializer.PulsarSerializat
 import org.apache.flink.streaming.api.scala._
 import org.apache.pulsar.client.api.Schema
 
-import java.time.Duration.ofSeconds
-
 /**
   * The application for scala based flink project. Writing avro messages into Pulsar.
   */
@@ -25,7 +23,7 @@ object AvroSink extends App {
 
   // Create avro source.
   val sourceFunction =
-    new InfiniteSourceFunction(new Generator(), ofSeconds(1))
+    new InfiniteSourceFunction(new Generator(), 10000)
   val source = env.addSource(sourceFunction)
 
   // Create sink schema.

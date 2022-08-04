@@ -24,13 +24,11 @@ import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 
-import org.apache.flink.shaded.guava30.com.google.common.util.concurrent.Uninterruptibles;
+import org.apache.flink.shaded.guava30.com.google.common.util.concurrent.RateLimiter;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A source function which would generate an infinite name stream.
@@ -40,13 +38,15 @@ public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> imp
     private static final long serialVersionUID = 6879785309829729896L;
 
     private final InfiniteGenerator<T> generator;
-    private final Duration interval;
+    private final int messagePerSeconds;
 
     private volatile boolean cancelled;
 
-    public InfiniteSourceFunction(InfiniteGenerator<T> generator, Duration interval) {
+    private transient RateLimiter limiter;
+
+    public InfiniteSourceFunction(InfiniteGenerator<T> generator, int messagePerSeconds) {
         this.generator = generator;
-        this.interval = interval;
+        this.messagePerSeconds = messagePerSeconds;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> imp
                 log.info("Write message into Pulsar: {}", message);
             }
 
+            limiter.acquire();
             sourceContext.collect(message);
-            Uninterruptibles.sleepUninterruptibly(interval.toMillis(), TimeUnit.MILLISECONDS);
         }
     }
 
@@ -72,6 +72,7 @@ public class InfiniteSourceFunction<T> extends RichParallelSourceFunction<T> imp
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
         generator.open(getRuntimeContext());
+        this.limiter = RateLimiter.create(messagePerSeconds);
     }
 
     @Override

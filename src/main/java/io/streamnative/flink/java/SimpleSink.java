@@ -30,7 +30,6 @@ import io.streamnative.flink.java.config.ApplicationConfigs;
 
 import static io.streamnative.flink.java.common.EnvironmentUtils.createEnvironment;
 import static io.streamnative.flink.java.config.ApplicationConfigs.loadConfig;
-import static java.time.Duration.ofSeconds;
 import static org.apache.flink.configuration.Configuration.fromMap;
 import static org.apache.flink.connector.pulsar.sink.writer.serializer.PulsarSerializationSchema.flinkSchema;
 
@@ -48,7 +47,7 @@ public class SimpleSink {
         StreamExecutionEnvironment env = createEnvironment(configs);
 
         // Create a fake source.
-        InfiniteSourceFunction<String> sourceFunction = new InfiniteSourceFunction<>(new FakerGenerator(), ofSeconds(1));
+        InfiniteSourceFunction<String> sourceFunction = new InfiniteSourceFunction<>(new FakerGenerator(), 20000);
         DataStreamSource<String> source = env.addSource(sourceFunction);
 
         // Create Pulsar sink.
