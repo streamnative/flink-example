@@ -32,3 +32,11 @@ services:
       - ./docker/bootstrap.sh:/pulsar/bin/bootstrap.sh
     restart: always
     command: ["/pulsar/bin/bootstrap.sh"]
+
+  flink:
+    image: streamnative/pulsar-flink:1.15.0.1
+    container_name: Flink
+    command: /bin/bash
+    depends_on:
+      - pulsar
+
