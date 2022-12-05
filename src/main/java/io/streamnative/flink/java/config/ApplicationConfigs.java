@@ -18,15 +18,17 @@
 
 package io.streamnative.flink.java.config;
 
-import org.apache.flink.streaming.api.CheckpointingMode;
-
 import ch.kk7.confij.ConfijBuilder;
+import ch.kk7.confij.source.env.ExplicitPropertiesSource;
+import org.apache.flink.runtime.entrypoint.FlinkParseException;
+import org.apache.flink.runtime.entrypoint.parser.CommandLineParser;
+import org.apache.flink.streaming.api.CheckpointingMode;
 
 import java.time.Duration;
 import java.util.Map;
 
 /**
- * An application configuration for this flink example.
+ * An application configuration for this flink example project.
  */
 public interface ApplicationConfigs {
 
@@ -57,9 +59,17 @@ public interface ApplicationConfigs {
         Map<String, String> options();
     }
 
-    static ApplicationConfigs loadConfig() {
+    /**
+     * Load the final application configs from the {@code configs.yml} file and main args.
+     * You can override the configuration by passing something like {@code -C serviceUrl=pulsar://192.168.50.8:6650}.
+     */
+    static ApplicationConfigs loadConfig(String[] args) throws FlinkParseException {
+        CommandLineParser<BootstrapConfigs> commandLineParser = new CommandLineParser<>(new BootstrapConfigsFactory());
+        BootstrapConfigs bootstrapConfigs = commandLineParser.parse(args);
+
         return ConfijBuilder.of(ApplicationConfigs.class)
             .loadFrom("classpath:configs.yml")
+            .loadFrom(new ExplicitPropertiesSource(bootstrapConfigs.getProperties()))
             .build();
     }
 }

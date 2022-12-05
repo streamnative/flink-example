@@ -41,7 +41,7 @@ public final class SimpleSource {
 
     public static void main(String[] args) throws Exception {
         // Load application configs.
-        ApplicationConfigs configs = loadConfig();
+        ApplicationConfigs configs = loadConfig(args);
 
         // Create execution environment
         StreamExecutionEnvironment env = createEnvironment(configs);

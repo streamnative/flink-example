@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ExampleUserProducer" type="Application" factoryName="Application">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
-    <option name="MAIN_CLASS_NAME" value="io.streamnative.flink.java.sql.ExampleUserProducer" />
+    <option name="MAIN_CLASS_NAME" value="io.streamnative.flink.java.producer.ExampleUserProducer" />
     <module name="flink-example" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="io.streamnative.flink.java.sql.*" />
+        <option name="PATTERN" value="io.streamnative.flink.java.producer.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
