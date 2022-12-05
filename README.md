@@ -30,7 +30,7 @@ sudo docker run -it \
   -p 8080:8080 \
   --mount type=bind,source=${PWD}/docker/data,target=/pulsar/data \
   --mount type=bind,source=${PWD}/docker/bootstrap.sh,target=/pulsar/bin/bootstrap.sh \
-  apachepulsar/pulsar:2.10.0 \
+  apachepulsar/pulsar:2.10.2 \
   /pulsar/bin/bootstrap.sh
 ```
 
@@ -94,7 +94,7 @@ We share the IDEA run configuration in `.run` directory. You can choose the exam
 
 ### Try the SQL Connector in docker container
 
-Please go to [SQL examples](./sql-examples/sql-example.md)
+Please go to [SQL examples](docs/sql-example.md)
 
 ## Reference
 

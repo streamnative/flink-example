@@ -20,7 +20,7 @@
 version: "3.4"
 services:
   pulsar:
-    image: apachepulsar/pulsar:2.10.0
+    image: apachepulsar/pulsar:2.10.2
     container_name: PulsarForFlink
     user: root
     privileged: true
@@ -34,9 +34,8 @@ services:
     command: ["/pulsar/bin/bootstrap.sh"]
 
   flink:
-    image: streamnative/pulsar-flink:1.15.0.1
+    image: streamnative/pulsar-flink:1.16.0.0
     container_name: Flink
     command: /bin/bash
     depends_on:
       - pulsar
-
