@@ -20,6 +20,8 @@ package io.streamnative.flink.java.models;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.apache.pulsar.shade.com.fasterxml.jackson.annotation.JsonSubTypes;
+import org.apache.pulsar.shade.com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 
@@ -29,6 +31,16 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.CLASS,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "@class"
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = LoadCreatedEvent.class, name = "LoadCreatedEvent"),
+    @JsonSubTypes.Type(value = LoadDeletedEvent.class, name = "LoadDeletedEvent"),
+    @JsonSubTypes.Type(value = LoadUpdatedEvent.class, name = "LoadUpdatedEvent"),
+})
 public class LoadEvent implements Serializable {
     private static final long serialVersionUID = 2895533085240328403L;
 

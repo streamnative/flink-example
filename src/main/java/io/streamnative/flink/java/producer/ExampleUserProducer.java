@@ -42,7 +42,7 @@ public final class ExampleUserProducer {
 
     private static final String USER_COMPLETE_TOPIC_PATH = "sample/flink/user";
 
-    public static void main(String[] args) throws PulsarClientException, InterruptedException {
+    public static void main(String[] args) throws Exception {
         ApplicationConfigs configs = loadConfig(args);
 
         PulsarClient client = PulsarClient.builder()

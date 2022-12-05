@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="AvroSink" type="Application" factoryName="Application">
+  <configuration default="false" name="LoadEventSink" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
-    <option name="MAIN_CLASS_NAME" value="io.streamnative.flink.scala.AvroSink" />
+    <option name="MAIN_CLASS_NAME" value="io.streamnative.flink.java.polymorphic.LoadEventSink" />
     <module name="flink-example" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="io.streamnative.flink.scala.*" />
+        <option name="PATTERN" value="io.streamnative.flink.java.polymorphic.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
