@@ -7,8 +7,8 @@ Showing the user how to use this connector.
 
 1. `SimpleSource`: Consuming the message from Pulsar by using Flink's `StringSchema`.
 2. `SimpleSink`: Write the message into Pulsar by using Flink's `StringSchema`.
-3. `AvroSink`: Write avro message into Pulsar by Scala and `AvroSchema`.
-4. `AvroSource`: Consuming avro message from Pulsar by Scala and `AvroSchema`.
+3. `LoadEventSink`: Write load event messages with multiple sub-classes into Pulsar by `JSONSchema`.
+4. `LoadEventSource`: Consuming load event messages from Pulsar by `JSONSchema` and filter the `LoadCreateEvent` class.
 
 ## How to use
 
@@ -16,7 +16,7 @@ Showing the user how to use this connector.
 
 #### Docker Compose (Recommend)
 
-Docker compose is quite easy to use. Simply execute `docker-compose run pulsar` in project root directory.
+Docker compose is quite easy to use. Simply execute `docker compose run pulsar` in project root directory.
 
 #### Docker command
 
