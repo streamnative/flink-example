@@ -21,8 +21,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.flink.connector.pulsar.common.config.PulsarClientFactory.createClient;
 
 /**
- * Query the schema by schema version. This should only be applied to a topic with
- * {@code Schema.AUTO_PRODUCE(Schema.AVRO(Class))} producer.
+ * Query the schema by schema version. This should only be applied to a topic with {@code Schema.AVRO} producer.
  */
 public class DynamicDeserializationSchema implements PulsarDeserializationSchema<LoadCreatedEvent> {
     private static final long serialVersionUID = 3320218454364912622L;
