@@ -16,28 +16,26 @@
  * limitations under the License.
  */
 
-package io.streamnative.flink.java;
+package io.streamnative.flink.java.dynamic;
 
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import io.streamnative.flink.java.config.ApplicationConfigs;
+import io.streamnative.flink.java.models.LoadCreatedEvent;
 import org.apache.flink.connector.pulsar.source.PulsarSource;
 import org.apache.flink.connector.pulsar.source.enumerator.cursor.StartCursor;
 import org.apache.flink.connector.pulsar.source.enumerator.cursor.StopCursor;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-
-import io.streamnative.flink.java.config.ApplicationConfigs;
 
 import static io.streamnative.flink.java.common.EnvironmentUtils.createEnvironment;
 import static io.streamnative.flink.java.config.ApplicationConfigs.loadConfig;
 import static java.time.Duration.ofMinutes;
 import static org.apache.flink.api.common.eventtime.WatermarkStrategy.forBoundedOutOfOrderness;
 import static org.apache.flink.configuration.Configuration.fromMap;
-import static org.apache.flink.connector.pulsar.source.reader.deserializer.PulsarDeserializationSchema.flinkSchema;
 import static org.apache.pulsar.client.api.SubscriptionType.Failover;
 
 /**
- * This example is used for consuming message from Pulsar.
+ * This example is used for consuming load event from Pulsar with different sub event class.
  */
-public final class SimpleSource {
+public class DynamicSource {
 
     public static void main(String[] args) throws Exception {
         // Load application configs.
@@ -47,13 +45,13 @@ public final class SimpleSource {
         StreamExecutionEnvironment env = createEnvironment(configs);
 
         // Create a Pulsar source, it would consume messages from Pulsar on "sample/flink/simple-string" topic.
-        PulsarSource<String> pulsarSource = PulsarSource.builder()
+        PulsarSource<LoadCreatedEvent> pulsarSource = PulsarSource.builder()
             .setServiceUrl(configs.serviceUrl())
             .setAdminUrl(configs.adminUrl())
             .setStartCursor(StartCursor.earliest())
             .setUnboundedStopCursor(StopCursor.never())
-            .setTopics("persistent://sample/flink/simple-string")
-            .setDeserializationSchema(flinkSchema(new SimpleStringSchema()))
+            .setTopics("persistent://sample/flink/dynamic-load-event")
+            .setDeserializationSchema(new DynamicDeserializationSchema())
             .setSubscriptionName("flink-source")
             .setConsumerName("flink-source-%s")
             .setSubscriptionType(Failover)
@@ -64,6 +62,6 @@ public final class SimpleSource {
         env.fromSource(pulsarSource, forBoundedOutOfOrderness(ofMinutes(5)), "pulsar-source")
             .print();
 
-        env.execute("Simple Pulsar Source");
+        env.execute("Load Event Pulsar Source");
     }
 }

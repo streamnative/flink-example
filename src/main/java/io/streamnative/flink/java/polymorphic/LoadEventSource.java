@@ -60,7 +60,7 @@ public class LoadEventSource {
             .setConfig(fromMap(configs.sourceConfigs()))
             .build();
 
-        // Pulsar Source don't require extra TypeInformation be provided.
+        // Pulsar Source doesn't require extra TypeInformation be provided.
         env.fromSource(pulsarSource, forBoundedOutOfOrderness(ofMinutes(5)), "pulsar-source")
             .flatMap(new LoadEventFilterFunction())
             .print();

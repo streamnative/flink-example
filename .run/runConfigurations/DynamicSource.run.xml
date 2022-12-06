@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DynamicSource" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+    <option name="MAIN_CLASS_NAME" value="io.streamnative.flink.java.dynamic.DynamicSource" />
+    <module name="flink-example" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="io.streamnative.flink.java.dynamic.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
