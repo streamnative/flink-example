@@ -19,7 +19,6 @@
 package io.streamnative.flink.java.models;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
@@ -29,8 +28,7 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
-public class LoadDeletedEvent extends LoadEvent {
+public class LoadDeletedEvent implements LoadEvent {
     private static final long serialVersionUID = -3637355499307958595L;
 
     private List<String> deletedIds;

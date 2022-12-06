@@ -18,8 +18,6 @@
 
 package io.streamnative.flink.java.models;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
 import org.apache.pulsar.shade.com.fasterxml.jackson.annotation.JsonSubTypes;
 import org.apache.pulsar.shade.com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -29,8 +27,6 @@ import java.io.Serializable;
  * Common class for events. We should add the Jackson annotation here.
  * You should use the Pulsar-shaded Jackson annotations.
  */
-@Data
-@Accessors(chain = true)
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.CLASS,
     include = JsonTypeInfo.As.PROPERTY,
@@ -41,14 +37,6 @@ import java.io.Serializable;
     @JsonSubTypes.Type(value = LoadDeletedEvent.class, name = "LoadDeletedEvent"),
     @JsonSubTypes.Type(value = LoadUpdatedEvent.class, name = "LoadUpdatedEvent"),
 })
-public class LoadEvent implements Serializable {
-    private static final long serialVersionUID = 2895533085240328403L;
-
-    private String uuid;
-
-    private Integer id;
-
-    private String name;
-
-    private String content;
+public interface LoadEvent extends Serializable {
+    // This is an empty interface.
 }

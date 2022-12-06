@@ -19,7 +19,6 @@
 package io.streamnative.flink.java.models;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -27,8 +26,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
-public class LoadUpdatedEvent extends LoadEvent {
+public class LoadUpdatedEvent implements LoadEvent {
     private static final long serialVersionUID = -6271238097681840919L;
 
     private String newAction;

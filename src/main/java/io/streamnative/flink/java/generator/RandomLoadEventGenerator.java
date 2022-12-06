@@ -26,7 +26,7 @@ import io.streamnative.flink.java.models.LoadUpdatedEvent;
 import net.datafaker.Faker;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.typeutils.TypeExtractor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -65,11 +65,7 @@ public class RandomLoadEventGenerator implements InfiniteSourceFunction.Infinite
 
         return new LoadCreatedEvent()
             .setCreatedAction(faker.bigBangTheory().character())
-            .setMessages(messages)
-            .setUuid(UUID.randomUUID().toString())
-            .setId(faker.number().positive())
-            .setName(faker.name().name())
-            .setContent(faker.commerce().productName());
+            .setMessages(messages);
     }
 
     private LoadEvent randomLoadDeletedEvent() {
@@ -79,21 +75,13 @@ public class RandomLoadEventGenerator implements InfiniteSourceFunction.Infinite
 
         return new LoadDeletedEvent()
             .setDeletedIds(ids)
-            .setErrorMsg(faker.appliance().brand())
-            .setUuid(UUID.randomUUID().toString())
-            .setId(faker.number().positive())
-            .setName(faker.name().name())
-            .setContent(faker.commerce().productName());
+            .setErrorMsg(faker.appliance().brand());
     }
 
     private LoadEvent randomLoadUpdatedEvent() {
         return new LoadUpdatedEvent()
             .setNewAction(faker.pokemon().name())
-            .setErrorMsg(faker.appliance().brand())
-            .setUuid(UUID.randomUUID().toString())
-            .setId(faker.number().positive())
-            .setName(faker.name().name())
-            .setContent(faker.commerce().productName());
+            .setErrorMsg(faker.appliance().brand());
     }
 
     @Override
@@ -103,6 +91,7 @@ public class RandomLoadEventGenerator implements InfiniteSourceFunction.Infinite
 
     @Override
     public TypeInformation<LoadEvent> getType() {
-        return Types.POJO(LoadEvent.class);
+        // This is only used for demo, you can't pass an event with such type information in production environments.
+        return TypeExtractor.getForClass(LoadEvent.class);
     }
 }
