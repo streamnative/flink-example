@@ -38,7 +38,7 @@ under the License.
 		<pulsar.version>2.10.1</pulsar.version>
 
 		<annotation-api.version>1.3.2</annotation-api.version>
-		<log4j.version>2.19.0</log4j.version>
+		<log4j.version>2.25.3</log4j.version>
 		<datafaker.version>1.7.0</datafaker.version>
 		<confij.version>0.6.6</confij.version>
 		<lombok.version>1.18.24</lombok.version>
